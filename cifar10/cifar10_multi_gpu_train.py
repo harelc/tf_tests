@@ -240,7 +240,7 @@ def train():
 
     for step in xrange(FLAGS.max_steps):
       start_time = time.time()
-      _, loss_value = sess.run([train_op, loss])
+      _, loss_value, global_step_value = sess.run([train_op, loss, global_step])
       duration = time.time() - start_time
 
       assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
@@ -250,9 +250,9 @@ def train():
         examples_per_sec = num_examples_per_step / duration
         sec_per_batch = duration / FLAGS.num_gpus
 
-        format_str = ('%s: step %d, loss = %.2f (%.1f examples/sec; %.3f '
+        format_str = ('%s: step %d, gs: %s, loss = %.2f (%.1f examples/sec; %.3f '
                       'sec/batch)')
-        print (format_str % (datetime.now(), step, loss_value,
+        print (format_str % (datetime.now(), step, global_step_value, loss_value,
                              examples_per_sec, sec_per_batch))
 
       if step % 100 == 0:
@@ -267,9 +267,9 @@ def train():
 
 def main(argv=None):  # pylint: disable=unused-argument
   cifar10.maybe_download_and_extract()
-  if tf.gfile.Exists(FLAGS.train_dir):
-    tf.gfile.DeleteRecursively(FLAGS.train_dir)
-  tf.gfile.MakeDirs(FLAGS.train_dir)
+  #if tf.gfile.Exists(FLAGS.train_dir):
+  #  tf.gfile.DeleteRecursively(FLAGS.train_dir)
+  #tf.gfile.MakeDirs(FLAGS.train_dir)
   train()
 
 
