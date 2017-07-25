@@ -146,6 +146,7 @@ with tf.Session() as sess:
         saver.restore(sess, ckpt.model_checkpoint_path)
     
     initial_step = global_step.eval()
+    print(initial_step)
 
     start_time = time.time()
     n_batches = int(mnist.train.num_examples / BATCH_SIZE)
